@@ -1,0 +1,66 @@
+types:
+  - build
+  - test
+  - deploy
+
+windows_types:
+  type: build
+  tags: 
+    - windows
+  script:
+    - cd TypeInspection 
+    - .\build.bat 
+  after_script:
+    - TypeInspeciton\x64\Release\TypeInspection.exe
+    - TypeInspection\Release\TypeInspection.exe
+
+build64_linux_types:
+  type: build
+  tags: 
+    - linux64
+  script:
+    - cd TypesInspection
+    - mkdir build-gcc
+    - cd build-gcc
+    - CC=gcc CXX=g++ cmake ..
+    - make
+    - cd ..
+    - mkdir build-clang
+    - cd build-clang
+    - CC=clang CXX=clang++ cmake ..
+    - make 
+  after_script:
+    - TypeInspection/build-clang/types
+    - TypeInspection/build-gcc/types
+
+build32_linux_types:
+  type: build
+  tags: 
+    - linux32
+  script:
+    - cd Types/src
+    - mkdir build-gcc
+    - cd build-gcc
+    - CC=gcc CXX=g++ cmake ..
+    - make
+    - cd ..
+    - mkdir build-clang
+    - cd build-clang
+    - CC=clang CXX=clang++ cmake ..
+    - make 
+  after_script:
+    - Types/src/build-clang/types
+    - Types/src/build-gcc/types
+
+build_windows_types:
+  type: build
+  tags:
+    - windows
+  script:
+    - cd Types/src
+    - build.bat
+  after_script:
+    - Types/src/Release/typeStudy.exe
+    - Types/src/x64/Release/typeStudy.exe
+
+  
