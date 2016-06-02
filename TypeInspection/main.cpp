@@ -17,6 +17,7 @@ void testPrimatives()
     PRINT_INFO(testPrimatives);
     myType type = { 1,2 };
     printInfo("myType", type);
+    PRINT_INFO(nullptr);
 }
 
 int main()
