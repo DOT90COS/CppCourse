@@ -269,7 +269,7 @@ Set
     {
         std::set<X> setX = { 11,2,13,42,5 }; //Compilation error if X doesn't define operator <
 
-        for (const auto& elem : x)
+        for (const auto& elem : setX)
             std::cout << elem.getX() << " ";
         std::cout << "\n";
     }
@@ -285,7 +285,7 @@ MultiSet
     {
         std::multiset<X> setX = { 11,2,13,42,5,11 }; //11 is in there twice!
 
-        for (const auto& elem : x)
+        for (const auto& elem : setX)
             std::cout << elem.getX() << " ";
         std::cout << "\n";
     }
@@ -382,5 +382,4 @@ An Example
        print(ABCS);  //will print any iterable type. See implementation in VS 2015
     }
 
-----
 
