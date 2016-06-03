@@ -13,8 +13,9 @@
 * uint32_t get_pidlist(std::vector<uint32_t>& buf);
 *
 * 1.) Call get_pidlist, providing a vector as input. It will
-* return the number of bytes required in order to read the
-* rest of the process list.
+* return the number of bytes written in the vector. If the number
+* of bytes is equal to the number of BYTES in the vector then there
+* is likely more data and the vector should be made bigger. 
 * 
 * 2.) Resize the vector to accomodate the remaining PIDs
 *
