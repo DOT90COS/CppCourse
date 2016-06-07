@@ -6,16 +6,6 @@
 #include <fstream>
 #include <string>
 
-void bar()
-{
-    int thing = 5;
-    auto lambda = [thing](int x) {return x + thing; };
-    thing = 6;
-    auto similarToLambda = closure(thing);
-    std::cout << "Labda + 5: " << lambda(5) << "\n";
-    std::cout << "closure + 5" << similarToLambda(5) << "\n";
-}
-
 struct closure
 {
     closure(int capture) { capture_ = capture; }
@@ -25,6 +15,16 @@ struct closure
 private:
     int capture_;
 };
+
+void bar()
+{
+    int thing = 5;
+    auto lambda = [thing](int x) {return x + thing; };
+    thing = 6;
+    auto similarToLambda = closure(thing);
+    std::cout << "Labda + 5: " << lambda(5) << "\n";
+    std::cout << "closure + 5" << similarToLambda(5) << "\n";
+}
 
 
 int overloaded(int x)
@@ -69,7 +69,7 @@ int main()
 {
     std::string file = "fun.txt";
     auto fun = [&file]()mutable {file += ".lambda.txt"; std::cout << file << std::endl; };
-    fun(1);
+    fun();
     processor(fun);
     appendMyEncodeName(file);
 
