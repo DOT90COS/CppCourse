@@ -18,32 +18,8 @@ std::ostream& operator<<(std::ostream& os, const Day& day);
 class Month
 {
     int month_;
-    const std::map<int, std::string> monthNames_ = { {1, "Jan"},
-                                            {2, "Feb"},
-                                            {3, "March"},
-                                            {4, "April"},
-                                            {5, "May"},
-                                            {6, "June"},
-                                            {7, "July"},
-                                            {8, "August"},
-                                            {9, "September"},
-                                            {10, "October"},
-                                            {11, "November"},
-                                            {12, "December"} };
-
-    const std::map<int, int> monthDays_ = { {1, 31},
-                                            {2, 28},
-                                            {3, 31},
-                                            {4, 30},
-                                            {5, 31},
-                                            {6, 30},
-                                            {7, 31},
-                                            {8, 31},
-                                            {9, 30},
-                                            {10, 31},
-                                            {11, 30},
-                                            {12, 31} };
-
+    static const std::map<int, std::string> monthNames_;
+    static const std::map<int, int> monthDays_;
 
     static bool verifyMonth(int m);
 

@@ -30,6 +30,34 @@ std::ostream& operator<<(std::ostream& os, const Day& day)
 
 
 //////////////////// Month
+const std::map<int, std::string> Month::monthNames_ = { 
+    {1, "Jan"},
+    {2, "Feb"},
+    {3, "March"},
+    {4, "April"},
+    {5, "May"},
+    {6, "June"},
+    {7, "July"},
+    {8, "August"},
+    {9, "September"},
+    {10, "October"},
+    {11, "November"},
+    {12, "December"} };
+
+const std::map<int, int> Month::monthDays_ = { 
+    {1, 31},
+    {2, 28},
+    {3, 31},
+    {4, 30},
+    {5, 31},
+    {6, 30},
+    {7, 31},
+    {8, 31},
+    {9, 30},
+    {10, 31},
+    {11, 30},
+    {12, 31} };
+
 
 bool Month::verifyMonth(int m)
 {
@@ -85,7 +113,7 @@ int Year::getYear() const
     return 0;
 }
 
-void setYear(int y)
+void Year::setYear(int y)
 {
   //IMPLEMENT ME
 }
