@@ -36,8 +36,12 @@ class BigNum //Class to hold absurdly large numbers.
 public:
     BigNum(uint64_t num);
     BigNum(const std::string aBigNum);
+//    BigNum(const BigNum& n);
+
 
     std::string toString() const;
+    BigNum operator+(const BigNum& n) const;
+    BigNum& operator+=(const BigNum& n);
 
     //Be Awesome
 };
