@@ -1,0 +1,371 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>Objects</title><meta name="generator" content="Hovercraft! 1.0 http://regebro.github.com/hovercraft"></meta><link rel="stylesheet" href="css/hovercraft.css" media="all"></link><link rel="stylesheet" href="css/impressConsole.css" media="all"></link><link rel="stylesheet" href="css/highlight.css" media="all"></link><link rel="stylesheet" href="CSS/course.css" media="screen,projection"></link></head><body class="impress-not-supported"><div id="impress"><div class="step step-level-1" step="0" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="0" data-y="0" data-z="0"><h1 id="building-objects">Building Objects</h1><img src="images/Douglas_McIlroy.jpeg"></img><p>"Those types are not "abstract"; they are as real as <tt>int</tt> and <tt>float</tt>. -- Doug McIlroy</p></div><div class="step step-level-1" step="1" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="1600" data-y="0" data-z="0"><h1 id="structs-and-classes">structs and classes</h1><p>structs and classes are really the same things with slightly different meanings</p><ul><li>a <tt>struct</tt> has a default access-specifier of public</li><li>a <tt>class</tt> has a default access-specifier of private</li></ul><p>So a <tt>struct</tt> and a <tt>class</tt> are functionally equivalent.
+<strong>BUT</strong> in real life it is generally accepted that a <tt>struct</tt> is a pile of bits with very little in the way of encapsulation or functionality, while a <tt>class</tt> generally has more intelligence and responsibility. This should become more clear as we look at more examples.</p><div class="notes"><p>This really goes back to C++'s history. People tend to use structs like they would in C and classes for object oriented programming.</p></div></div><div class="step step-level-1" step="2" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="3200" data-y="0" data-z="0"><h1 id="class-basics">Class Basics</h1><ul><li>A class is a user-defined type.</li><li>Consists of a set of members (data and functions).</li><li>Member functions can define the meaning of:<ul><li>initialization (creation)</li><li>copy</li><li>move</li><li>and cleanup (destruction)</li></ul></li><li>Members are accessed using <tt>.</tt> for objects and <tt>-&gt;</tt> for pointers.</li><li>Operators, such as <tt>+</tt>, <tt>!</tt>, and <tt>[]</tt>, can be defined for a class.</li><li>A class is a namespace containing its members.</li><li>The <tt>public</tt> members provide the class interface.</li><li>The <tt>private</tt> members provide the implementation.</li><li>A <tt>struct</tt> is a <tt>class</tt> where members are by default public.</li></ul></div><div class="step step-level-1" step="3" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="4800" data-y="0" data-z="0"><h1 id="a-simple-class">A Simple Class</h1><pre class="highlight code C++"><span class="k">class</span> <span class="nc">X</span> <span class="p">{</span>
+    <span class="k">public</span><span class="o">:</span>  <span class="c1">// The user interface
+</span>      <span class="n">X</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span><span class="o">:</span><span class="n">m_</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">{}</span> <span class="c1">// A constructor (initializes member m_)
+</span>
+      <span class="kt">int</span> <span class="n">member_function</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span> <span class="c1">// A Member Function
+</span>      <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">old</span> <span class="o">=</span> <span class="n">m_</span><span class="p">;</span>
+        <span class="n">m_</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>                  <span class="c1">// sets the new value
+</span>        <span class="k">return</span> <span class="n">old</span><span class="p">;</span>              <span class="c1">// returns the old value
+</span>      <span class="p">}</span>
+
+    <span class="k">private</span><span class="o">:</span>  <span class="c1">// the representation (implementation) is private
+</span>      <span class="kt">int</span> <span class="n">m_</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">X</span> <span class="n">var</span> <span class="p">{</span><span class="mi">7</span><span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">user</span><span class="p">(</span><span class="n">X</span> <span class="n">var</span><span class="p">,</span> <span class="n">X</span><span class="o">*</span> <span class="n">ptr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">var</span><span class="p">.</span><span class="n">member_function</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>  <span class="c1">// Access using . (dot)
+</span>    <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ptr</span><span class="o">-&gt;</span><span class="n">member_function</span><span class="p">(</span><span class="mi">9</span><span class="p">);</span> <span class="c1">// Access using -&gt; (arrow)
+</span>    <span class="kt">int</span> <span class="n">z</span> <span class="o">=</span> <span class="n">var</span><span class="p">.</span><span class="n">m_</span><span class="p">;</span> <span class="c1">// ERROR can't access private member variable.
+</span><span class="p">}</span></pre></div><div class="step step-level-1" step="4" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="6400" data-y="0" data-z="0"><h1 id="initialization-methods">Initialization Methods</h1><p>There are four ways to initialize objects in C++11.</p><ul><li>with <tt>()</tt></li><li>with <tt>= (This is not an assignment)</tt></li><li>with <tt>{}</tt></li><li>and with <tt>= {}</tt> (C++ usually, treats this the same as just <tt>{}</tt>)</li><li>List initialization (curly braces <tt>{ }</tt>) is preferred as it does not allow narrowing.</li></ul><pre class="highlight code C++"><span class="kt">void</span> <span class="nf">fun</span><span class="p">(</span><span class="kt">double</span> <span class="n">val</span><span class="p">,</span> <span class="kt">int</span> <span class="n">val2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">val</span><span class="p">;</span> <span class="c1">//if val==7.98, x2 becomes 7 (bad)
+</span>    <span class="kt">char</span> <span class="n">c2</span> <span class="o">=</span> <span class="n">val2</span><span class="p">;</span> <span class="c1">//if val2 == 1025, c2 becomes 1 (bad)
+</span>    <span class="kt">int</span> <span class="n">x3</span> <span class="p">{</span><span class="n">val</span><span class="p">};</span> <span class="c1">//error: possible truncation (good)
+</span>    <span class="kt">char</span> <span class="n">c3</span> <span class="p">{</span><span class="n">val2</span><span class="p">};</span> <span class="c1">//error: possible narrowing (good)
+</span>    <span class="kt">char</span> <span class="n">c4</span> <span class="p">{</span><span class="mi">24</span><span class="p">};</span> <span class="c1">//OK: 24 can be represented exactly as a char (good)
+</span>    <span class="kt">char</span> <span class="n">c5</span> <span class="p">{</span><span class="mi">264</span><span class="p">};</span> <span class="c1">//Error (assuming 8-bit char): 264 cannot be represented as a char (good)
+</span>    <span class="kt">int</span> <span class="n">x4</span> <span class="p">{</span><span class="mf">2.0</span><span class="p">};</span> <span class="c1">//error: no double to int value conversion (good)
+</span><span class="p">}</span></pre><div class="notes"><p>Look at Effective Modern C++ Item 7 for more information.</p></div></div><div class="step step-level-1" step="5" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="8000" data-y="0" data-z="0"><h1 id="when-to-not-use-list-initialization">When to not use list initialization</h1><ul><li>With <tt>auto</tt> types<ul><li>When initializing <tt>auto</tt> with braces the deduced type is std::initializer_list</li></ul></li><li>When a constructor of a type takes an std::initializer_list and that isn't what you want.<ul><li>The initializer_list is a more specific match and therefore uses that.</li></ul></li></ul><pre class="highlight code C++"><span class="k">class</span> <span class="nc">Widget</span> <span class="p">{</span>
+    <span class="k">public</span><span class="o">:</span>
+      <span class="n">Widget</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">b</span><span class="p">);</span>
+      <span class="n">Widget</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">initializer_list</span><span class="o">&lt;</span><span class="kt">long</span> <span class="kt">double</span><span class="o">&gt;</span> <span class="n">il</span><span class="p">);</span>
+      <span class="p">};</span>
+
+      <span class="n">Widget</span> <span class="nf">w1</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span> <span class="c1">// Calls Widget(int i, bool b);
+</span>      <span class="n">Widget</span> <span class="nf">w2</span><span class="p">(</span><span class="n">w1</span><span class="p">);</span> <span class="c1">//Calls copy constructor (not shown)
+</span>      <span class="n">Widget</span> <span class="n">w3</span><span class="p">{</span><span class="n">w1</span><span class="p">};</span> <span class="c1">//Calls the std::initializer_list constructor
+</span>      <span class="k">auto</span> <span class="n">w4</span> <span class="o">=</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="nb">true</span><span class="p">};</span> <span class="c1">//w4 is now an std::initializer_list unrelated to Widget.
+</span>      <span class="k">auto</span> <span class="n">w5</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span> <span class="nb">true</span><span class="p">};</span> <span class="c1">//w5 will be a Widget initialized with initializer list.
+</span>      <span class="k">auto</span> <span class="n">w6</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">};</span> <span class="c1">//w6 will be a Widget initialized with initializer list.
+</span>      <span class="k">auto</span> <span class="n">w7</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">{</span><span class="n">w4</span><span class="p">};</span> <span class="c1">//Copy or move constructor</span></pre><p>}</p><p>note:</p><pre class="highlight ">Do the initialization exercise and go over the results.</pre></div><div class="step step-level-1" step="6" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="9600" data-y="0" data-z="0"><h1 id="construction">Construction</h1><ul><li>A class can have as many constructors as it wants.</li><li>If a class doesn't supply a copy or move constructor the compiler will try to make one for you.<ul><li>If the class is simply a plain old data type then the <tt>default</tt> constructor will be more efficient.</li></ul></li><li>C++11 Defines copy constructors as well as move constructors.<ul><li>Copy constructors are called when the object passed in is an L-Value</li><li>Move constructors are called when the object passed in is an R-Value</li></ul></li><li>A default constructor is one that can be called with no arguments. (In some cases this doesn't make since, so don't give your class one.)</li><li>Constructors can be <tt>default</tt> ed or even <tt>delete</tt> ed.</li></ul></div><div class="step step-level-1" step="7" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="11200" data-y="0" data-z="0"><h1 id="plain-old-data-type-pod">Plain Old Data-Type (POD)</h1><p>C++11 relaxes the rules for PODs and further splits them into two categories.</p><ul><li>Supports static initialization (Trivial Class)</li><li>Same memory layout as a struct compiled in C. (Standard-layout)</li></ul></div><div class="step step-level-1" step="8" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="12800" data-y="0" data-z="0"><h1 id="trivial-classes">Trivial Classes</h1><ul><li>has no non-trivial copy constructors</li><li>has no non-trivial move constructors</li><li>has no non-trivial copy assignment operators</li><li>has no non-trivial move assignment operators</li><li>has a trivial destructor</li></ul><p>Benefits</p><ul><li>static initialization and ok to memcpy</li></ul></div><div class="step step-level-1" step="9" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="14400" data-y="0" data-z="0"><h1 id="trivial-examples">Trivial Examples</h1><pre class="highlight code C++"><span class="k">struct</span> <span class="n">Trivial1</span><span class="p">{};</span> <span class="c1">//empty classes are trivial
+</span>
+<span class="k">struct</span> <span class="n">Trivial2</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nl">Trivial3</span> <span class="p">:</span> <span class="n">Trivial2</span> <span class="p">{</span>
+    <span class="n">Trivial3</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span> <span class="c1">//not user provided
+</span>    <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">Trivial4</span> <span class="p">{</span> <span class="c1">//no restrictions on access modifiers
+</span>    <span class="k">public</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+    <span class="k">private</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">b</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">Trivial5</span> <span class="p">{</span>
+    <span class="n">Trivial1</span> <span class="n">a</span><span class="p">;</span>
+    <span class="n">Trivial2</span> <span class="n">b</span><span class="p">;</span>
+    <span class="n">Trivial3</span> <span class="n">c</span><span class="p">;</span>
+    <span class="n">Trivial4</span> <span class="n">d</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">Trivial6</span> <span class="p">{</span>
+    <span class="n">Trivial5</span> <span class="n">a</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="nf">f</span><span class="p">();</span> <span class="c1">//Its ok to have non-virtual functions.
+</span><span class="p">};</span></pre></div><div class="step step-level-1" step="10" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="16000" data-y="0" data-z="0"><h1 id="standard-layout">Standard Layout</h1><p>These are types that are useful for communicating with other languages. This is because they have the same memory layout as a struct or union in C.</p><ul><li>Has no non-static data members of type non-standard-layout class or reference</li><li>Has no virtual functions and no virtual base classes</li><li>Has no non-standard-layout base classes</li><li>Has the same access control for all non-static data members.</li><li>Either has no non-static data members in the most derived class and at most one base class with non-static data members, or has no base classes with non-static data member</li><li>Has no base classes of the same type as the first non-static data member.</li></ul></div><div class="step step-level-1" step="11" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="17600" data-y="0" data-z="0"><h1 id="standard-layout-examples">Standard Layout Examples</h1><pre class="highlight code C++"><span class="c1">// empty classes have standard-layout
+</span><span class="k">struct</span> <span class="n">StandardLayout1</span> <span class="p">{};</span>
+
+<span class="k">struct</span> <span class="n">StandardLayout2</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">StandardLayout3</span> <span class="p">{</span>
+<span class="k">private</span><span class="o">:</span> <span class="c1">// both are private, so it's ok
+</span>    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nl">StandardLayout4</span> <span class="p">:</span> <span class="n">StandardLayout1</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="nf">f</span><span class="p">();</span> <span class="c1">// perfectly fine to have non-virtual functions
+</span><span class="p">};</span>
+
+<span class="k">struct</span> <span class="nl">StandardLayout5</span> <span class="p">:</span> <span class="n">StandardLayout1</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+    <span class="n">StandardLayout1</span> <span class="n">y</span><span class="p">;</span> <span class="c1">// can have members of base type if they're not the first
+</span><span class="p">};</span>
+
+<span class="k">struct</span> <span class="nl">StandardLayout6</span> <span class="p">:</span> <span class="n">StandardLayout1</span><span class="p">,</span> <span class="n">StandardLayout5</span> <span class="p">{</span>
+    <span class="c1">// can use multiple inheritance as long only
+</span>    <span class="c1">// one class in the hierarchy has non-static data members
+</span><span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">StandardLayout7</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">StandardLayout7</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span> <span class="o">:</span> <span class="n">x</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">y</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="p">{}</span> <span class="c1">// user-provided ctors are ok
+</span><span class="p">};</span></pre></div><div class="step step-level-1" step="12" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="19200" data-y="0" data-z="0"><h1 id="id1">Standard Layout Examples</h1><pre class="highlight code C++"><span class="k">struct</span> <span class="n">StandardLayout8</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">StandardLayout8</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="o">:</span> <span class="n">x</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{}</span> <span class="c1">// user-provided ctors are ok
+// ok to have non-static data members and other members with different access
+</span><span class="k">private</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">StandardLayout9</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+    <span class="k">static</span> <span class="n">NonStandardLayout1</span> <span class="n">y</span><span class="p">;</span> <span class="c1">// no restrictions on static members
+</span><span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">NonStandardLayout1</span> <span class="p">{</span>
+    <span class="k">virtual</span> <span class="n">f</span><span class="p">();</span> <span class="c1">// cannot have virtual functions
+</span><span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">NonStandardLayout2</span> <span class="p">{</span>
+    <span class="n">NonStandardLayout1</span> <span class="n">X</span><span class="p">;</span> <span class="c1">// has non-standard-layout member
+</span><span class="p">};</span>
+
+<span class="k">struct</span> <span class="nl">NonStandardLayout3</span> <span class="p">:</span> <span class="n">StandardLayout1</span> <span class="p">{</span>
+    <span class="n">StandardLayout1</span> <span class="n">x</span><span class="p">;</span> <span class="c1">// first member cannot be of the same type as base
+</span><span class="p">};</span>
+
+<span class="k">struct</span> <span class="nl">NonStandardLayout4</span> <span class="p">:</span> <span class="n">StandardLayout3</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">z</span><span class="p">;</span> <span class="c1">// more than one class has non-static data members
+</span><span class="p">};</span>
+
+<span class="k">struct</span> <span class="nl">NonStandardLayout5</span> <span class="p">:</span> <span class="n">NonStandardLayout3</span> <span class="p">{};</span> <span class="c1">// has a non-standard-layout base class</span></pre></div><div class="step step-level-1" step="13" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="20800" data-y="0" data-z="0"><h1 id="constructors">Constructors</h1><p>Basic constructors are written with the name of the class as a function with no return type.</p><pre class="highlight code C++"><span class="k">class</span> <span class="nc">MyClass</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">MyClass</span><span class="p">()</span> <span class="p">{}</span> <span class="c1">//sets x_ to 0
+</span>    <span class="n">MyClass</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span><span class="o">:</span> <span class="n">x_</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{}</span> <span class="c1">//sets x_ to x
+</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">x_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//Default initialization
+</span><span class="p">};</span></pre></div><div class="step step-level-1" step="14" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="22400" data-y="0" data-z="0"><h1 id="initialization-list-in-constructors">Initialization list in constructors</h1><p>What was that funny <tt>: x_(x)</tt> in the previous example. It was an initialization list.</p><p>These initialize your member data and are more efficient than copying them to the stack and then setting the data inside of the constructor. In other words it allows the compiler to do some optimization.</p><p>The order that the member variables appear in the initialization list must be in the same order that they are defined in the class or struct.</p><pre class="highlight code C++"><span class="k">class</span> <span class="nc">MyClass</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">MyClass</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">c</span><span class="p">,</span> <span class="kt">int</span> <span class="n">d</span><span class="p">)</span><span class="o">:</span> <span class="n">a_</span><span class="p">(</span><span class="n">a</span><span class="p">),</span>
+                                  <span class="c1">// I skipped b_ but that is ok we are still in order.
+</span>                                  <span class="n">c_</span><span class="p">(</span><span class="n">c</span><span class="p">),</span>
+                                  <span class="n">d_</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="p">{</span>
+
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">a_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">b_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">c_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">d_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">};</span></pre></div><div class="step step-level-1" step="15" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="24000" data-y="0" data-z="0"><h1 id="copy-construction">Copy Construction</h1><p>This is a special constructor that allow for a new object to be built from a similar one.</p><pre class="highlight code C++"><span class="n">Class</span> <span class="n">MyClass</span> <span class="p">{</span>
+    <span class="n">MyClass</span><span class="p">()</span> <span class="p">{}</span> <span class="c1">//default constructor
+</span>
+    <span class="c1">//Copy constructor.
+</span>    <span class="n">MyClass</span><span class="p">(</span><span class="k">const</span> <span class="n">MyClass</span><span class="o">&amp;</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//do what is needed to make a copy}
+</span><span class="p">};</span></pre><div class="notes"><p>I specifically say similar here because it is possible to build a base class object from a derived class object so long as the base class isn't pure virtual.</p></div></div><div class="step step-level-1" step="16" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="25600" data-y="0" data-z="0"><h1 id="move-constructor">Move Constructor</h1><p>With C++11 and beyond there is a new type of constructor specifically for R-Values that has the ability to greatly speed up code.
+That is the move constructor. Because the object being moved from is a temporary there is no need to keep any of its state valid. This means that pointers to dynamically allocated memory for example can just be moved over and not necessarily the data.</p><pre class="highlight code C++"><span class="n">Class</span> <span class="n">X</span> <span class="p">{</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">v_</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">size_</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">X</span><span class="p">()</span><span class="o">:</span><span class="n">v_</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">42</span><span class="p">]),</span> <span class="n">size_</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>
+    <span class="n">X</span><span class="p">(</span><span class="k">const</span> <span class="n">X</span><span class="o">&amp;</span> <span class="n">n</span><span class="p">)</span><span class="o">:</span><span class="n">v_</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">n</span><span class="p">.</span><span class="n">size_</span><span class="p">]),</span> <span class="n">size_</span><span class="p">(</span><span class="n">n</span><span class="p">.</span><span class="n">size_</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span> <span class="k">auto</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0U</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size_</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+            <span class="n">v_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span><span class="p">.</span><span class="n">v_</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="c1">//copy each element.
+</span>    <span class="p">}</span>
+    <span class="n">X</span><span class="p">(</span><span class="n">X</span><span class="o">&amp;&amp;</span> <span class="n">n</span><span class="p">)</span><span class="o">:</span><span class="n">v_</span><span class="p">(</span><span class="n">n</span><span class="p">.</span><span class="n">v_</span><span class="p">),</span> <span class="n">size_</span><span class="p">(</span><span class="n">n</span><span class="p">.</span><span class="n">size_</span><span class="p">)</span> <span class="p">{</span> <span class="n">n</span><span class="p">.</span><span class="n">v_</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span> <span class="p">}</span> <span class="c1">//Much simplier.
+</span>    <span class="o">~</span><span class="n">X</span><span class="p">(){</span><span class="k">if</span><span class="p">(</span><span class="n">v_</span><span class="p">)</span> <span class="k">delete</span><span class="p">[]</span> <span class="n">v_</span><span class="p">;}</span>
+<span class="p">};</span></pre></div><div class="step step-level-1" step="17" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="27200" data-y="0" data-z="0"><h1 id="delegating-constructor">Delegating Constructor</h1><p>If you want two constructors to do similar things pre-C++11, you could repeat yourself or write an initialization function to preform the common actions.</p><pre class="highlight code C++"><span class="k">class</span> <span class="nc">X</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">a_</span><span class="p">;</span>
+    <span class="n">validate</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">x</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">k_max</span><span class="p">)</span> <span class="n">a_</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span> <span class="k">else</span> <span class="k">throw</span> <span class="nf">Bad_X</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="p">}</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">X</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span><span class="n">validate</span><span class="p">(</span><span class="n">x</span><span class="p">);}</span>
+    <span class="n">X</span><span class="p">()</span> <span class="p">{</span><span class="n">validate</span><span class="p">(</span><span class="mi">42</span><span class="p">);}</span>
+    <span class="n">X</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">){</span><span class="kt">int</span> <span class="n">x</span><span class="o">=</span><span class="n">to</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="n">validate</span><span class="p">(</span><span class="n">x</span><span class="p">);}</span>
+<span class="p">};</span></pre><div class="notes"><p>This is the better of the two options. Copy Pasta is bad because often times one will get a bug fix while the other will be forgotten about. It is just hard to maintain.</p></div></div><div class="step step-level-1" step="18" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="28800" data-y="0" data-z="0"><h1 id="delegating-constructor-cont">Delegating Constructor Cont...</h1><p>In C++11 we can do better with delegating constructors.</p><ul><li>A constructor can not delegate and explicitly initialize a member.</li><li>Delegating by calling another constructor in a constructors member is most likely an error.</li></ul><pre class="highlight code C++"><span class="k">class</span> <span class="nc">X</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">a_</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">b_</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">X</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">)</span><span class="o">:</span><span class="n">b_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span><span class="k">if</span> <span class="p">(</span><span class="mi">0</span><span class="o">&lt;</span><span class="n">x</span> <span class="o">&amp;&amp;</span> <span class="n">x</span><span class="o">&lt;</span><span class="n">k_max</span><span class="p">)</span> <span class="n">a_</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span> <span class="k">else</span> <span class="k">throw</span> <span class="nf">Bad_X</span><span class="p">(</span><span class="n">x</span><span class="p">);}</span>
+    <span class="n">X</span><span class="p">(</span><span class="kt">double</span> <span class="n">b</span><span class="p">)</span> <span class="o">:</span> <span class="n">X</span><span class="p">{</span><span class="mi">42</span><span class="p">},</span> <span class="n">b_</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="p">{}</span> <span class="c1">// ERROR Can't delegate and explicitly initialize another variable.
+</span>
+    <span class="c1">// ERROR: This creates a X object with the X(int) constructor inside of the X() constructor
+</span>    <span class="c1">// as a temporary on the stack!!!
+</span>    <span class="n">X</span><span class="p">()</span> <span class="p">{</span> <span class="n">X</span><span class="p">{</span><span class="mi">42</span><span class="p">};</span> <span class="p">}</span>
+
+    <span class="n">X</span><span class="p">()</span><span class="o">:</span> <span class="n">X</span><span class="p">{</span><span class="mi">42</span><span class="p">}</span> <span class="c1">//GOOD! no problems in C++11.
+</span><span class="p">};</span></pre></div><div class="step step-level-1" step="19" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="30400" data-y="0" data-z="0"><h1 id="in-class-initializers">In class Initializers</h1><ul><li>The () operator cannot be used in an in class initializer.
+* This is due to how parsing and name lookup occur.</li></ul><pre class="highlight code C++"><span class="k">class</span> <span class="nc">X</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">a_</span> <span class="p">{</span><span class="mi">42</span><span class="p">};</span>
+    <span class="kt">int</span> <span class="n">b_</span> <span class="o">=</span> <span class="mi">12</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">X</span><span class="p">()</span> <span class="p">{};</span> <span class="c1">//initializes a_ to 42
+</span>    <span class="n">X</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">)</span><span class="o">:</span> <span class="n">a_</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="p">{};</span> <span class="c1">//initializes a_ to a instead.
+</span><span class="p">};</span></pre></div><div class="step step-level-1" step="20" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="32000" data-y="0" data-z="0"><h1 id="dtor-destructor">DTOR (Destructor)</h1><ul><li>Can automatically generated if you don't need any special clean up.</li><li>Can be used to free memory</li><li>Can be used to free resources</li><li>Likely shouldn't throw exceptions, otherwise:<ul><li>Your object can't be used in standard containers</li><li>A throw will call std::terminate in C++11</li></ul></li></ul><pre class="highlight code C++"><span class="k">class</span> <span class="nc">Widget</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Widget</span><span class="p">()</span> <span class="p">{</span> <span class="n">a_</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span> <span class="p">}</span>
+    <span class="o">~</span><span class="n">Widget</span><span class="p">()</span> <span class="p">{</span> <span class="k">delete</span> <span class="p">[]</span> <span class="n">a_</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">a_</span><span class="p">;</span>
+<span class="p">};</span></pre></div><div class="step step-level-1" step="21" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="33600" data-y="0" data-z="0"><h1 id="resource-acquisition-is-initialization-raii">Resource Acquisition is Initialization (RAII)</h1><p>One of the more powerful concepts in C++.
+This is a C++ technique that ties a resource (memory allocation, threads, sockets, files, database connection) lifetime to the lifetime of an object.</p><ul><li>The constructor acquires the resource.</li><li>The destructor releases the resource.</li></ul></div><div class="step step-level-1" step="22" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="35200" data-y="0" data-z="0"><h1 id="raii-example">RAII Example</h1><pre class="highlight code C++"><span class="k">class</span> <span class="nc">File</span>
+<span class="p">{</span>
+    <span class="n">HANDLE</span> <span class="n">file_</span> <span class="o">=</span> <span class="n">INVALID_HANDLE</span><span class="p">;</span>
+    <span class="n">File</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">filename</span><span class="p">){</span>
+      <span class="n">file_</span> <span class="o">=</span> <span class="n">openFile</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">File</span><span class="p">()</span> <span class="p">{</span><span class="n">closeFile</span><span class="p">(</span><span class="n">file_</span><span class="p">);}</span>
+<span class="p">};</span></pre><div class="notes"><p>This is all made up to be platform agnostic.</p></div></div><div class="step step-level-1" step="23" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="36800" data-y="0" data-z="0"><h1 id="member-functions">Member Functions</h1><p>They really aren't that special other than they have access to all of the member variables.</p><pre class="highlight code C++"><span class="k">class</span> <span class="nc">Point</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">y_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">z_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">move</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">z</span><span class="p">){</span><span class="n">x_</span> <span class="o">+=</span> <span class="n">x</span><span class="p">;</span> <span class="n">y_</span> <span class="o">+=</span> <span class="n">y</span><span class="p">;</span> <span class="n">z_</span> <span class="o">+=</span> <span class="n">z</span><span class="p">;}</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">()</span> <span class="p">{</span><span class="k">return</span> <span class="n">x_</span><span class="p">;}</span>
+    <span class="kt">int</span> <span class="n">y</span><span class="p">()</span> <span class="p">{</span><span class="k">return</span> <span class="n">y_</span><span class="p">;}</span>
+    <span class="kt">int</span> <span class="n">z</span><span class="p">()</span> <span class="p">{</span><span class="k">return</span> <span class="n">z_</span><span class="p">;}</span>
+<span class="p">};</span></pre></div><div class="step step-level-1" step="24" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="38400" data-y="0" data-z="0"><h1 id="operator-overloading">Operator Overloading</h1><p>To overload operators we use special member functions that start with operator followed by the operator symbol we want to overload.</p><pre class="highlight code C++"><span class="n">Complex</span> <span class="p">{</span>
+    <span class="kt">double</span> <span class="n">r_</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">i_</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="p">...</span>
+
+    <span class="n">Complex</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Complex</span><span class="o">&amp;</span> <span class="n">num</span><span class="p">);</span> <span class="c1">//copy assignment.
+</span>    <span class="n">Complex</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">Complex</span><span class="o">&amp;&amp;</span> <span class="n">num</span><span class="p">);</span> <span class="c1">//move assignment.
+</span><span class="p">};</span></pre></div><div class="step step-level-1" step="25" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="40000" data-y="0" data-z="0"><h1 id="generating-default-operations">Generating Default Operations</h1><p>The compiler can and will generate:</p><ul><li>A default constructor: <tt>X()</tt></li><li>A copy constructor: <tt>X(const X&amp;)</tt></li><li>A copy assignment: <tt>X&amp; operator=(const X&amp;)</tt></li><li>A move constructor: <tt>X(X&amp;&amp;)</tt></li><li>A move assignment: <tt>X&amp; operator=(X&amp;&amp;)</tt></li><li>A destructor: <tt>~X()</tt></li></ul><p>By default the compiler will generate each of these if a program uses them. However if the programmer takes control by defining one or more of these operations, the generation of related operations is suppressed.</p><ul><li>declares a constructor for a class, the default is not generated for that class.</li><li>declares a copy operation, a move operation, or a destructor for a class, then no copy operation, move operation, or destructor is generated.</li></ul></div><div class="step step-level-1" step="26" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="41600" data-y="0" data-z="0"><h1 id="default-and-delete">Default and Delete</h1><p>In order to get the suppressed operations back we can use the <tt>default</tt> keyword.
+In order to ensure that a operation is not generated we can use the <tt>delete</tt> keyword.</p><pre class="highlight code C++"><span class="c1">//A Class that can only be moved and not copied.
+</span><span class="k">class</span> <span class="nc">Thing</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="mi">42</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">a_</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Thing</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+    <span class="n">Thing</span><span class="p">(</span><span class="k">const</span> <span class="n">Thing</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+    <span class="n">Thing</span><span class="p">(</span><span class="n">Thing</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+    <span class="n">Thing</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Thing</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+    <span class="n">Thing</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">Thing</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+<span class="p">};</span></pre></div><div class="step step-level-1" step="27" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="43200" data-y="0" data-z="0"><h1 id="rule-of-three">Rule of Three</h1><p>C++ (pre 11) If a class requires a user-defined destructor, a user-defined copy constructor, or a user-defined copy assignment operator, it almost certainly requires all three.</p><p>These special member functions if not specifically defined will be implicity defined by the compiler. The compiler will copy them by value resulting in a shallow copy of pointers, handles and other non-trivially copyable types.</p><pre class="highlight code C++"><span class="k">class</span> <span class="nc">rule_of_three</span>
+<span class="p">{</span>
+    <span class="kt">char</span><span class="o">*</span> <span class="n">cstring</span><span class="p">;</span> <span class="c1">// raw pointer used as a handle to a dynamically-allocated memory block
+</span> <span class="k">public</span><span class="o">:</span>
+    <span class="n">rule_of_three</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">arg</span><span class="p">)</span>
+    <span class="o">:</span> <span class="n">cstring</span><span class="p">(</span><span class="k">new</span> <span class="kt">char</span><span class="p">[</span><span class="n">std</span><span class="o">::</span><span class="n">strlen</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="c1">// allocate
+</span>    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">strcpy</span><span class="p">(</span><span class="n">cstring</span><span class="p">,</span> <span class="n">arg</span><span class="p">);</span> <span class="c1">// populate
+</span>    <span class="p">}</span>
+    <span class="o">~</span><span class="n">rule_of_three</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">delete</span><span class="p">[]</span> <span class="n">cstring</span><span class="p">;</span>  <span class="c1">// deallocate
+</span>    <span class="p">}</span>
+    <span class="n">rule_of_three</span><span class="p">(</span><span class="k">const</span> <span class="n">rule_of_three</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="c1">// copy constructor
+</span>    <span class="p">{</span>
+        <span class="n">cstring</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="p">[</span><span class="n">std</span><span class="o">::</span><span class="n">strlen</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">cstring</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">strcpy</span><span class="p">(</span><span class="n">cstring</span><span class="p">,</span> <span class="n">other</span><span class="p">.</span><span class="n">cstring</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">rule_of_three</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">rule_of_three</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="c1">// copy assignment
+</span>    <span class="p">{</span>
+        <span class="kt">char</span><span class="o">*</span> <span class="n">tmp_cstring</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="p">[</span><span class="n">std</span><span class="o">::</span><span class="n">strlen</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">cstring</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">strcpy</span><span class="p">(</span><span class="n">tmp_cstring</span><span class="p">,</span> <span class="n">other</span><span class="p">.</span><span class="n">cstring</span><span class="p">);</span>
+        <span class="k">delete</span><span class="p">[]</span> <span class="n">cstring</span><span class="p">;</span>
+        <span class="n">cstring</span> <span class="o">=</span> <span class="n">tmp_cstring</span><span class="p">;</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span></pre></div><div class="step step-level-1" step="28" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="44800" data-y="0" data-z="0"><h1 id="rule-of-five">Rule of Five</h1><p>C++ complicates the rule of three because of move constructors and move assignment operators. These must also be added to the list.</p><p>Code too big ... next slide.</p></div><div class="step step-level-1" step="29" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="46400" data-y="0" data-z="0"><pre class="highlight code C++"><span class="k">class</span> <span class="nc">rule_of_five</span>
+<span class="p">{</span>
+    <span class="kt">char</span><span class="o">*</span> <span class="n">cstring</span><span class="p">;</span> <span class="c1">// raw pointer used as a handle to a dynamically-allocated memory block
+</span> <span class="k">public</span><span class="o">:</span>
+    <span class="n">rule_of_five</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">arg</span><span class="p">)</span>
+    <span class="o">:</span> <span class="n">cstring</span><span class="p">(</span><span class="k">new</span> <span class="kt">char</span><span class="p">[</span><span class="n">std</span><span class="o">::</span><span class="n">strlen</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="c1">// allocate
+</span>    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">strcpy</span><span class="p">(</span><span class="n">cstring</span><span class="p">,</span> <span class="n">arg</span><span class="p">);</span> <span class="c1">// populate
+</span>    <span class="p">}</span>
+    <span class="o">~</span><span class="n">rule_of_five</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">delete</span><span class="p">[]</span> <span class="n">cstring</span><span class="p">;</span>  <span class="c1">// deallocate
+</span>    <span class="p">}</span>
+    <span class="n">rule_of_five</span><span class="p">(</span><span class="k">const</span> <span class="n">rule_of_five</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="c1">// copy constructor
+</span>    <span class="p">{</span>
+        <span class="n">cstring</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="p">[</span><span class="n">std</span><span class="o">::</span><span class="n">strlen</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">cstring</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">strcpy</span><span class="p">(</span><span class="n">cstring</span><span class="p">,</span> <span class="n">other</span><span class="p">.</span><span class="n">cstring</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">rule_of_five</span><span class="p">(</span><span class="n">rule_of_five</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="o">:</span> <span class="n">cstring</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">cstring</span><span class="p">)</span> <span class="c1">// move constructor
+</span>    <span class="p">{</span>
+        <span class="n">other</span><span class="p">.</span><span class="n">cstring</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">rule_of_five</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">rule_of_five</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="c1">// copy assignment
+</span>    <span class="p">{</span>
+        <span class="kt">char</span><span class="o">*</span> <span class="n">tmp_cstring</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="p">[</span><span class="n">std</span><span class="o">::</span><span class="n">strlen</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">cstring</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">strcpy</span><span class="p">(</span><span class="n">tmp_cstring</span><span class="p">,</span> <span class="n">other</span><span class="p">.</span><span class="n">cstring</span><span class="p">);</span>
+        <span class="k">delete</span><span class="p">[]</span> <span class="n">cstring</span><span class="p">;</span>
+        <span class="n">cstring</span> <span class="o">=</span> <span class="n">tmp_cstring</span><span class="p">;</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">rule_of_five</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">rule_of_five</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span> <span class="c1">// move assignment
+</span>    <span class="p">{</span>
+        <span class="k">delete</span><span class="p">[]</span> <span class="n">cstring</span><span class="p">;</span>
+        <span class="n">cstring</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">cstring</span><span class="p">;</span>
+        <span class="n">other</span><span class="p">.</span><span class="n">cstring</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span></pre></div><div class="step step-level-1" step="30" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="48000" data-y="0" data-z="0"><h1 id="make-data-members-private">Make Data Members Private</h1><p>This has to do with the ability to maintain an invariance in your types.</p><ul><li>An invariance is defined by the set of valid values for data members.</li><li>Keeping the implementation separate from the design allows for easier refactoring of that implementation in the future.</li></ul><pre class="highlight code C++"><span class="k">class</span> <span class="nc">Date</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">month_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//valid (00 .. 11)
+</span>    <span class="kt">int</span> <span class="n">day_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//valid (00 .. 31)
+</span>    <span class="kt">int</span> <span class="n">year_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//valid (00 .. 2050)
+</span>
+<span class="k">public</span> <span class="o">:</span> <span class="c1">//Things that are public define the interface to the user.
+</span>   <span class="n">Date</span><span class="p">()</span> <span class="p">{}</span>
+   <span class="n">Date</span><span class="p">(</span><span class="kt">int</span> <span class="n">month</span><span class="p">,</span> <span class="kt">int</span> <span class="n">day</span><span class="p">,</span> <span class="kt">int</span> <span class="n">year</span><span class="p">)</span><span class="o">:</span><span class="n">month_</span><span class="p">(</span><span class="n">month</span><span class="p">),</span> <span class="n">day_</span><span class="p">(</span><span class="n">day</span><span class="p">),</span> <span class="n">year_</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="p">{}</span>
+
+   <span class="kt">int</span> <span class="n">getMonth</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">month_</span><span class="p">;</span> <span class="p">}</span>
+   <span class="kt">int</span> <span class="n">getDay</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span><span class="k">return</span> <span class="n">day_</span><span class="p">;</span> <span class="p">}</span>
+   <span class="kt">int</span> <span class="n">getYear</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span><span class="k">return</span> <span class="n">year_</span><span class="p">;</span> <span class="p">}</span>
+   <span class="kt">void</span> <span class="n">setYear</span><span class="p">(</span><span class="kt">int</span> <span class="n">year</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">year_</span> <span class="o">=</span> <span class="n">year</span> <span class="o">&gt;=</span> <span class="mo">00</span> <span class="o">&amp;&amp;</span> <span class="n">year</span> <span class="o">&lt;=</span> <span class="mi">2050</span> <span class="o">?</span> <span class="nl">year</span> <span class="p">:</span> <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Bad Year"</span><span class="p">);</span>
+   <span class="p">}</span>
+   <span class="kt">void</span> <span class="n">setDay</span><span class="p">(</span><span class="kt">int</span> <span class="n">day</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">day_</span> <span class="o">=</span> <span class="n">day</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">day</span> <span class="o">&lt;=</span> <span class="mi">31</span> <span class="o">?</span> <span class="nl">day</span> <span class="p">:</span> <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Bad Day"</span><span class="p">);</span>
+   <span class="p">}</span>
+   <span class="kt">void</span> <span class="n">setMonth</span><span class="p">(</span><span class="kt">int</span> <span class="n">month</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">month_</span> <span class="o">=</span> <span class="n">month</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">month</span> <span class="o">&lt;=</span> <span class="mi">31</span> <span class="o">?</span> <span class="nl">month</span> <span class="p">:</span> <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Bad Month"</span><span class="p">);</span>
+   <span class="p">}</span>
+<span class="p">};</span></pre><p>This code doesn't maintain its invariance correctly. How can it be fixed?</p><div class="notes"><p>The constructor for Date allows for invalid values to make it into the objects data members.
+By keeping the data members private we can also add things in the future and adapt the type more easily. One such example would be to add the ability to make this object thread safe if we started to use this code in multi-threaded code.</p></div></div><div class="step step-level-1" step="31" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="49600" data-y="0" data-z="0"><h1 id="make-interfaces-that-are-easy-to-use">Make Interfaces That Are Easy To Use</h1><p>The goal is "if an attempted use of an interface won't do what the client expects, the code won't compile; and if the code does compile it will do what the client wants" - Scott Meyer Item 18 Effective C++</p><pre class="highlight code C++"><span class="n">Date</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mo">03</span><span class="p">,</span> <span class="mi">1999</span><span class="p">);</span> <span class="c1">//opps wrong order.
+</span><span class="n">Date</span><span class="p">(</span><span class="mo">03</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">1999</span><span class="p">);</span></pre><p>One way to prevent client errors is by introducing new types:
+* Make Month, Day, Year their own types?</p><blockquote><ul><li>enum class</li><li>structs</li><li>classes</li></ul></blockquote></div><div class="step step-level-1" step="32" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="51200" data-y="0" data-z="0"><h1 id="date">Date</h1><pre class="highlight code C++"><span class="k">struct</span> <span class="n">Day</span> <span class="p">{</span>
+    <span class="k">explicit</span> <span class="n">Day</span><span class="p">(</span><span class="kt">int</span> <span class="n">d</span><span class="p">)</span><span class="o">:</span><span class="n">val_</span><span class="p">{</span><span class="n">d</span><span class="p">}{}</span>
+    <span class="kt">int</span> <span class="n">val_</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">Month</span> <span class="p">{</span>
+    <span class="k">explicit</span> <span class="n">Day</span><span class="p">(</span><span class="kt">int</span> <span class="n">d</span><span class="p">)</span><span class="o">:</span><span class="n">val_</span><span class="p">{</span><span class="n">d</span><span class="p">}{}</span>
+    <span class="kt">int</span> <span class="n">val_</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">Year</span> <span class="p">{</span>
+    <span class="k">explicit</span> <span class="n">Day</span><span class="p">(</span><span class="kt">int</span> <span class="n">d</span><span class="p">)</span><span class="o">:</span><span class="n">val_</span><span class="p">{</span><span class="n">d</span><span class="p">}{}</span>
+    <span class="kt">int</span> <span class="n">val_</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Date</span> <span class="p">{</span>
+    <span class="n">Day</span> <span class="n">day_</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="n">Month</span> <span class="n">month_</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="n">Year</span> <span class="n">year_</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Date</span><span class="p">(</span><span class="k">const</span> <span class="n">Month</span><span class="o">&amp;</span> <span class="n">month</span><span class="p">,</span> <span class="k">const</span> <span class="n">Day</span><span class="o">&amp;</span> <span class="n">day</span><span class="p">,</span> <span class="k">const</span> <span class="n">Year</span><span class="o">&amp;</span> <span class="n">year</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">month_</span><span class="p">{</span><span class="n">month</span><span class="p">},</span> <span class="n">day_</span><span class="p">{</span><span class="n">day</span><span class="p">},</span> <span class="n">year_</span><span class="p">{</span><span class="n">year</span><span class="p">}</span> <span class="p">{}</span>
+        <span class="p">...</span>
+<span class="p">};</span>
+
+<span class="n">Date</span> <span class="nf">d</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1995</span><span class="p">);</span> <span class="c1">//ERROR wrong types
+</span><span class="n">Date</span> <span class="nf">d</span><span class="p">(</span><span class="n">Day</span><span class="p">{</span><span class="mi">30</span><span class="p">},</span> <span class="n">Month</span><span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="n">Year</span><span class="p">{</span><span class="mi">1995</span><span class="p">});</span> <span class="c1">//Error, wrong types (cause of order)
+</span><span class="n">Date</span> <span class="nf">d</span><span class="p">(</span><span class="n">Month</span><span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="n">Day</span><span class="p">{</span><span class="mi">30</span><span class="p">},</span> <span class="n">Year</span><span class="p">{</span><span class="mi">1995</span><span class="p">});</span> <span class="c1">//Works.</span></pre><div class="notes"><p>This could be made better yet if we somehow relate the days, months, and year all together. This way we can correctly check the number of days and on those leap years now if February has 28 or 29 days. For now lets say this check should be done at run time but we may be able to do something with inheritance.</p></div></div><div class="step step-level-1" step="33" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="52800" data-y="0" data-z="0"><h1 id="treat-class-design-as-type-design">Treat Class Design as Type Design</h1><ul><li><dl><dt>How should object of your new type be created and destroyed?</dt><dd><ul><li>How this is done will influence your constructors and destructors.</li><li>This could also involve how you handle memory allocation if you used that.</li></ul></dd></dl></li><li><dl><dt>How should object initialization differ from object assignment?</dt><dd><ul><li>The behavior of constructors compared to assignment will answer this question.</li></ul></dd></dl></li><li>What does it mean for objects of your type to be passed by value?
+* Need to consider by value for both R-Values and L-Values.
+* This means both the copy and move constructors</li><li>What are the restrictions on legal values for your new types?
+* Usually, only some values of a class's data members are valid.
+* The combination of valid values defines the invariance that your class will have to maintain</li><li>What standard functions should be disallowed?
+* Those should be deleted (C++11 and beyond), or made private (pre C++11)</li><li>Who should have access to the members of your new type?
+* This determines friendships and which members are public, protected, or private as well as whether or not to nest a class inside another.</li><li>How general is your new type?
+* Perhaps it would be better as a template?</li></ul></div><div class="step step-level-1" step="34" data-rotate-x="0" data-rotate-y="0" data-rotate-z="0" data-scale="1" data-x="54400" data-y="0" data-z="0"><h1 id="the-end">The End</h1></div></div><div id="hovercraft-help"><table><tr><th>Space</th><td>Forward</td></tr><tr><th>Right, Down, Page Down</th><td>Next slide</td></tr><tr><th>Left, Up, Page Up</th><td>Previous slide</td></tr><tr><th>P</th><td>Open presenter console</td></tr><tr><th>H</th><td>Toggle this help</td></tr></table></div><script type="text/javascript" src="js/impress.js"></script><script type="text/javascript" src="js/impressConsole.js"></script><script type="text/javascript" src="js/hovercraft.js"></script></body></html>
