@@ -1,0 +1,12 @@
+﻿  Source.cpp
+c:\users\scap\documents\code\students\coursematerial\instructor solutions\04-functional-more-containers\lambdas\source.cpp(36): error C2059: syntax error: ')'
+c:\users\scap\documents\code\students\coursematerial\instructor solutions\04-functional-more-containers\lambdas\source.cpp(41): error C2059: syntax error: ')'
+c:\users\scap\documents\code\students\coursematerial\instructor solutions\04-functional-more-containers\lambdas\source.cpp(46): error C2059: syntax error: ';'
+c:\users\scap\documents\code\students\coursematerial\instructor solutions\04-functional-more-containers\lambdas\source.cpp(47): error C3536: 'oddOverEven': cannot be used before it is initialized
+c:\users\scap\documents\code\students\coursematerial\instructor solutions\04-functional-more-containers\lambdas\source.cpp(52): error C2059: syntax error: ';'
+c:\users\scap\documents\code\students\coursematerial\instructor solutions\04-functional-more-containers\lambdas\source.cpp(53): error C3536: 'evenOverOdd': cannot be used before it is initialized
+c:\users\scap\documents\code\students\coursematerial\instructor solutions\04-functional-more-containers\lambdas\source.cpp(58): error C2059: syntax error: ';'
+c:\users\scap\documents\code\students\coursematerial\instructor solutions\04-functional-more-containers\lambdas\source.cpp(59): error C3536: 'oddOverEvenIncrease': cannot be used before it is initialized
+c:\users\scap\documents\code\students\coursematerial\instructor solutions\04-functional-more-containers\lambdas\source.cpp(65): error C3536: 'evenOverOddIncrease': cannot be used before it is initialized
+c:\users\scap\documents\code\students\coursematerial\instructor solutions\04-functional-more-containers\lambdas\source.cpp(65): error C2440: 'initializing': cannot convert from 'void' to 'int'
+  c:\users\scap\documents\code\students\coursematerial\instructor solutions\04-functional-more-containers\lambdas\source.cpp(65): note: Expressions of type void cannot be converted to other types
