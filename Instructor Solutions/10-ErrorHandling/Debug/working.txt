@@ -1,0 +1,9 @@
+# This is a comment
+
+# Above is a blank line
+
+user: scap
+password: mysupersecretpassword
+
+
+port: 444

@@ -1,0 +1,10 @@
+# This is a comment
+
+# Above is a blank line
+
+user: scap
+password: mysupersecretpassword
+
+badKeyDeliminator# nocolon
+
+port: 444
