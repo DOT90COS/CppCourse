@@ -15,11 +15,21 @@ Go learn about enable_if and try to only make this class work with stl container
 If the type passed in isn't a container use static_asserts to print a nice error message.
 Use your BIGNUM class. 
 ***************************************************************/
+#include <set>
 
 template<typename T>
 class Max {
+    std::multiset<typename T::value_type> data_;
 
 public:
-    Max(const T& thing);
-
+    Max(const T& thing) :data_(thing.begin(), thing.end()) {}
+    typename T::value_type getMax() { return *data_.rbegin(); }
+    typename T::value_type getMin() { return *data_.begin(); }
+    double getMean() {
+        double total = 0;
+        for (auto& x : data_)
+            total += x;
+        return total / data_.size();
+    }
+    T getSorted() { return T(data_.begin(), data_.end()); }
 };
