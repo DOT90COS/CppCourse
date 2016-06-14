@@ -65,8 +65,23 @@ void processor(std::function<void()> f)
     f();
 }
 
+void bar(double a)
+{
+    std::cout << "double" << std::endl;
+}
+/*
+void bar(const double a)
+{
+    std::cout << "const double\n";
+}
+*/
 int main()
 {
+    auto d = 3.4;
+    const auto e = 4.3;
+    bar(d);
+    bar(e);
+
     std::string file = "fun.txt";
     auto fun = [&file]()mutable {file += ".lambda.txt"; std::cout << file << std::endl; };
     fun();
