@@ -37,7 +37,7 @@
 
       <span class="n">Widget</span> <span class="nf">w1</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span> <span class="c1">// Calls Widget(int i, bool b);
 </span>      <span class="n">Widget</span> <span class="nf">w2</span><span class="p">(</span><span class="n">w1</span><span class="p">);</span> <span class="c1">//Calls copy constructor (not shown)
-</span>      <span class="n">Widget</span> <span class="n">w3</span><span class="p">{</span><span class="n">w1</span><span class="p">};</span> <span class="c1">//Calls the std::initializer_list constructor
+</span>      <span class="n">Widget</span> <span class="n">w3</span><span class="p">{</span><span class="n">w1</span><span class="p">};</span> <span class="c1">//Calls the copy constructor
 </span>      <span class="k">auto</span> <span class="n">w4</span> <span class="o">=</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="nb">true</span><span class="p">};</span> <span class="c1">//w4 is now an std::initializer_list unrelated to Widget.
 </span>      <span class="k">auto</span> <span class="n">w5</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span> <span class="nb">true</span><span class="p">};</span> <span class="c1">//w5 will be a Widget initialized with initializer list.
 </span>      <span class="k">auto</span> <span class="n">w6</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">};</span> <span class="c1">//w6 will be a Widget initialized with initializer list.

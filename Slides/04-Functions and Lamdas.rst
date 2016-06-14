@@ -46,7 +46,7 @@ Functions can have the same name so long as the signature is different
    int foo( );
    void foo(); //error impossible to differentiate between a call to foo() and a call to foo();
    void foo(double a);
-   void foo(const double a);
+   void foo(const double a); //error foo(double) already defined.
    void foo(double& a); //error impossible to differentiate between a call to foo(2.0); 
    int foo(signed int); 
    int foo(int); //int's are by default signed and therefore this is the same function as above. 
